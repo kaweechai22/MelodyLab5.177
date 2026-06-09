@@ -518,23 +518,22 @@ function drawLongitudinalFinal(ctx, c, p, w, h){
   const xMin = Math.max(158, w * 0.155);
   const xMax = w - 72;
 
-  // v5.66: vertical-fill layout.
-  // top of particles stays just below direction/equilibrium labels;
-  // bottom stays close to x-axis and player bar.
-  const rows = 21;
+  // v5.67: vertical-fill layout kept, but with fewer rows and larger particles.
+  // This makes each particle more visible while preserving the same graph size.
+  const rows = 15;
   const graphTop = 58;                  // close to graph title area
   const axisY = h - 44;                 // close to bottom/player bar
   const y0 = Math.max(104, graphTop + 72);
   const availableHeight = Math.max(220, axisY - y0 - 12);
   const rowGap = availableHeight / (rows - 1);
-  const particleRadius = Math.max(7.8, Math.min(10.2, rowGap * 0.44));
+  const particleRadius = Math.max(10.5, Math.min(14.2, rowGap * 0.62));
   const bandHeight = (rows - 1) * rowGap;
   const yCenter = y0 + bandHeight * 0.5;
 
   const speakerX = Math.max(66, xMin - 94);
   const speakerY = yCenter;
-  const currentAmpPx = 17.0 * p.A;
-  const baseGap = Math.max(34, Math.min(42, w * 0.034));
+  const currentAmpPx = 16.5 * p.A;
+  const baseGap = Math.max(39, Math.min(48, w * 0.038));
   const k = 2 * Math.PI / 270;
   const phase = vizState.t * 0.105 * p.speed;
   const obsRow = Math.floor(rows/2);
@@ -543,7 +542,7 @@ function drawLongitudinalFinal(ctx, c, p, w, h){
   let obsY = y0 + obsRow * rowGap;
 
   // Speaker source on the left
-  drawSpeaker(ctx, speakerX, speakerY, 1.18);
+  drawSpeaker(ctx, speakerX, speakerY, 1.16);
 
   // Compression/rarefaction glow bands fill the particle column height.
   const bandCenters=[

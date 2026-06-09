@@ -2369,3 +2369,7 @@ main.wrap{
     height:38px !important;
   }
 }
+
+
+/* v5.67: keep v5.66 graph size, but emphasize larger particles in the canvas renderer */
+/* No canvas-height change here: graph area intentionally remains the same size. */
