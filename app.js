@@ -375,13 +375,13 @@ function drawLongitudinalFinal(ctx, c, p, w, h){
 
   const pad = 46;
   const eqX = w * 0.50;
-  const axisY = h - 82;
 
   // Particle band is above x-axis, compact and close to design mockup.
   const rows = 4;
   const rowGap = 16;
   const particleRadius = 6.8;
   const y0 = h * 0.47;
+  const axisY = Math.min(h - 78, y0 + rowGap * 3 + 72);
   const xMin = pad + 32;
   const xMax = w - pad - 54;
 
@@ -493,26 +493,39 @@ function drawLongitudinalFinal(ctx, c, p, w, h){
       const disp=currentAmpPx*Math.sin(k*(base-eqX)-phase);
       const x=base+disp;
       const isObs = row===obsRow && Math.abs(base-obsBaseX) < 0.5;
-      if(isObs){obsX=x; obsY=y;}
-
-      const grd=ctx.createRadialGradient(x-2.5,y-2.5,1,x,y,isObs?particleRadius+2:particleRadius+2);
       if(isObs){
-        grd.addColorStop(0,"#ffd7e6");
-        grd.addColorStop(.45,"#ff4d8d");
-        grd.addColorStop(1,"rgba(255,77,141,.26)");
-      }else{
-        grd.addColorStop(0,"#d8ffff");
-        grd.addColorStop(.45,"#34d8ff");
-        grd.addColorStop(1,"rgba(31,111,255,.32)");
+        obsX=x;
+        obsY=y;
+        continue;
       }
+
+      const grd=ctx.createRadialGradient(x-2.5,y-2.5,1,x,y,particleRadius+2);
+      grd.addColorStop(0,"#e8ffff");
+      grd.addColorStop(.42,"#57dcff");
+      grd.addColorStop(.82,"rgba(56,189,248,.96)");
+      grd.addColorStop(1,"rgba(31,111,255,.22)");
       ctx.fillStyle=grd;
       ctx.beginPath();
-      ctx.arc(x,y,isObs?particleRadius+1.4:particleRadius,0,Math.PI*2);
+      ctx.arc(x,y,particleRadius,0,Math.PI*2);
       ctx.fill();
     }
   }
 
-
+  // Draw the observation particle last so it stays a full red circle with no blue overlap.
+  ctx.save();
+  const obsRadius = particleRadius + 1.8;
+  const redGrad = ctx.createRadialGradient(obsX-2,obsY-2,1,obsX,obsY,obsRadius);
+  redGrad.addColorStop(0,"#fff5f9");
+  redGrad.addColorStop(.50,"#ff5b98");
+  redGrad.addColorStop(1,"#d61f69");
+  ctx.fillStyle = redGrad;
+  ctx.beginPath();
+  ctx.arc(obsX,obsY,obsRadius,0,Math.PI*2);
+  ctx.fill();
+  ctx.strokeStyle = "rgba(255,255,255,.45)";
+  ctx.lineWidth = 1.4;
+  ctx.stroke();
+  ctx.restore();
 
   // No legend dots under x-axis in this final visual.
 }

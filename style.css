@@ -1530,3 +1530,21 @@ main.wrap{
   .longitudinalFocusPage .embeddedPlayerBar .playerBtn{width:52px;height:52px}
   .longitudinalFocusPage .embeddedPlayerBar .playerPrimary{width:62px;height:62px}
 }
+
+/* v5.47: remove non-functional page back button to gain vertical space */
+.detailPage .backBtn{
+  display:none !important;
+}
+.detailPage .detailNav{
+  justify-content:flex-start;
+  gap:0;
+}
+.detailPage .brand{
+  gap:14px;
+}
+@media(max-width:760px){
+  .detailPage .brand img{
+    width:42px;
+    height:42px;
+  }
+}
