@@ -392,7 +392,7 @@ function drawRebuiltTopic(ctx,c,p,w,h,mode){
       ctx.strokeStyle="rgba(255,255,255,.24)"; ctx.setLineDash([8,7]); ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(xL,boundaryY); ctx.lineTo(xR,boundaryY); ctx.stroke(); ctx.setLineDash([]);
 
       // geometry
-      const srcWaveX = xL + 88, srcWaveY = top + 126; drawSpeaker(ctx, xL+12, srcWaveY, .88);
+      const srcWaveX = xL + 118, srcWaveY = top + 126; drawSpeaker(ctx, xL+4, srcWaveY, .76);
       const rayStartX = srcWaveX + 94, rayStartY = srcWaveY - 16;
       const hitX = rayStartX + (boundaryY-rayStartY) * Math.tan(theta1);
       const hitY = boundaryY;
@@ -467,8 +467,8 @@ function drawRebuiltTopic(ctx,c,p,w,h,mode){
       ctx.save(); ctx.textAlign="left";
       ctx.font="bold 12px Sarabun, system-ui"; ctx.fillStyle= topHotter ? "#ff98a8" : "#4fdcff"; ctx.fillText(topTempLabel, xR-258, top+44);
       ctx.font="11px Sarabun, system-ui"; ctx.fillText(`v₁ ≈ ${vTop.toFixed(1)} m/s`, xR-258, top+64); ctx.fillText(`λ₁ ≈ ${lambdaTop.toFixed(3)} m`, xR-258, top+81);
-      ctx.font="bold 12px Sarabun, system-ui"; ctx.fillStyle= bottomHotter ? "#ff98a8" : "#4fdcff"; ctx.fillText(bottomTempLabel, xL+16, bottom-66);
-      ctx.font="11px Sarabun, system-ui"; ctx.fillText(`v₂ ≈ ${vBottom.toFixed(1)} m/s`, xL+16, bottom-47); ctx.fillText(`λ₂ ≈ ${lambdaBottom.toFixed(3)} m`, xL+16, bottom-31);
+      ctx.font="bold 12px Sarabun, system-ui"; ctx.fillStyle= bottomHotter ? "#ff98a8" : "#4fdcff"; ctx.fillText(bottomTempLabel, xL+86, bottom-66);
+      ctx.font="11px Sarabun, system-ui"; ctx.fillText(`v₂ ≈ ${vBottom.toFixed(1)} m/s`, xL+86, bottom-47); ctx.fillText(`λ₂ ≈ ${lambdaBottom.toFixed(3)} m`, xL+86, bottom-31);
       ctx.restore();
       ctx.save(); ctx.fillStyle="rgba(10,22,50,.86)"; ctx.strokeStyle="rgba(96,165,250,.34)"; roundRect(ctx,panel.x+28,panel.y+26,124,30,12); ctx.fill(); ctx.stroke(); ctx.fillStyle="#dbeafe"; ctx.font="bold 14px Sarabun, system-ui"; ctx.textAlign="center"; ctx.fillText(`f = ${freq.toFixed(0)} Hz`, panel.x+90, panel.y+46); ctx.restore();
       ctx.save();
@@ -481,7 +481,13 @@ function drawRebuiltTopic(ctx,c,p,w,h,mode){
       ctx.fillStyle= theta2Deg < theta1Deg ? "#bfffd1" : "#ffd166";
       ctx.fillText(theta2Deg < theta1Deg ? "เข้าหา Normal" : "ออกจาก Normal", hitX+34, hitY+32);
       ctx.restore();
-      coreMetricCard(ctx,xR-230,bottom-76,208,58,"มุมหักเห", noRefraction?"θ₂ = θ₁":`θ₂ ≈ ${theta2Deg.toFixed(1)}°`, "วัดจากเส้นแนวฉาก", "#9dffcb");
+      // angle summary cards: keep them away from the refracted ray
+      const thetaCardW = 200, thetaCardH = 56;
+      const thetaCardX = xR - thetaCardW - 16;
+      const theta1CardY = top + 92;
+      const theta2CardY = (theta2Deg > 36 || outX > xR - 170) ? top + 154 : bottom - 76;
+      coreMetricCard(ctx, thetaCardX, theta1CardY, thetaCardW, thetaCardH, "มุมตกกระทบ", `θ₁ ≈ ${theta1Deg.toFixed(1)}°`, "วัดจากเส้นแนวฉาก", "#f6d86b");
+      coreMetricCard(ctx, thetaCardX, theta2CardY, thetaCardW, thetaCardH, "มุมหักเห", noRefraction?"θ₂ = θ₁":`θ₂ ≈ ${theta2Deg.toFixed(1)}°`, "วัดจากเส้นแนวฉาก", "#9dffcb");
 
     } else if(profile==="multilayer"){
       // multilayer approximation: many thin horizontal layers, each pair causes a small refraction
@@ -501,7 +507,7 @@ function drawRebuiltTopic(ctx,c,p,w,h,mode){
       }
       ctx.fillStyle="rgba(110,72,56,.96)"; ctx.fillRect(xL,bottom-groundH,xR-xL,groundH);
       ctx.fillStyle="rgba(240,244,250,.86)"; ctx.font="bold 14px Sarabun, system-ui"; ctx.fillText("ground", xR-76, bottom-5);
-      const srcX = xL+108, srcY = bottom-groundH-10; drawSpeaker(ctx, xL+16, srcY, .90);
+      const srcX = xL+132, srcY = bottom-groundH-10; drawSpeaker(ctx, xL+6, srcY, .78);
       const startX = srcX, startY = srcY;
       const startFrac = 1 - ((srcY-top)/skyH); // closer to bottom => near 1
       const vStart = speedAtFrac(lim((srcY-top)/skyH,0,1));
@@ -565,8 +571,8 @@ function drawRebuiltTopic(ctx,c,p,w,h,mode){
       ctx.save(); ctx.textAlign="left";
       ctx.font="bold 12px Sarabun, system-ui"; ctx.fillStyle = topHotter ? "#ff98a8" : "#4fdcff"; ctx.fillText(topTempLabel, xR-290, top+56);
       ctx.font="11px Sarabun, system-ui"; ctx.fillText(`v ≈ ${vTop.toFixed(1)} m/s`, xR-290, top+80); ctx.fillText(`λ ≈ ${lambdaTop.toFixed(3)} m`, xR-290, top+101);
-      ctx.font="bold 12px Sarabun, system-ui"; ctx.fillStyle = bottomHotter ? "#ff98a8" : "#4fdcff"; ctx.fillText(bottomTempLabel, xL+16, bottom-74);
-      ctx.font="11px Sarabun, system-ui"; ctx.fillText(`v ≈ ${vBottom.toFixed(1)} m/s`, xL+16, bottom-52); ctx.fillText(`λ ≈ ${lambdaBottom.toFixed(3)} m`, xL+16, bottom-31); ctx.restore();
+      ctx.font="bold 12px Sarabun, system-ui"; ctx.fillStyle = bottomHotter ? "#ff98a8" : "#4fdcff"; ctx.fillText(bottomTempLabel, xL+88, bottom-74);
+      ctx.font="11px Sarabun, system-ui"; ctx.fillText(`v ≈ ${vBottom.toFixed(1)} m/s`, xL+88, bottom-52); ctx.fillText(`λ ≈ ${lambdaBottom.toFixed(3)} m`, xL+88, bottom-31); ctx.restore();
       ctx.save(); ctx.fillStyle="rgba(10,22,50,.86)"; ctx.strokeStyle="rgba(96,165,250,.34)"; roundRect(ctx,panel.x+28,panel.y+26,124,30,12); ctx.fill(); ctx.stroke(); ctx.fillStyle="#dbeafe"; ctx.font="bold 14px Sarabun, system-ui"; ctx.textAlign="center"; ctx.fillText(`f = ${freq.toFixed(0)} Hz`, panel.x+90, panel.y+46); ctx.restore();
       ctx.save(); ctx.fillStyle="rgba(13,26,53,.84)"; ctx.strokeStyle="rgba(251,191,36,.36)"; roundRect(ctx,panel.x+160,panel.y+26,236,30,12); ctx.fill(); ctx.stroke(); ctx.fillStyle="#ffd166"; ctx.font="bold 12px Sarabun, system-ui"; ctx.textAlign="center"; ctx.fillText(`ขยายภาพ ×${bendBoost.toFixed(1)} (ไม่ใช่ค่าจริง)`, panel.x+278, panel.y+46); ctx.restore();
       ctx.save(); ctx.font="bold 12px Sarabun, system-ui"; ctx.textAlign="left"; ctx.fillStyle="#ff8fc2"; ctx.fillText("Multi-layer Ray", startX-12, startY-18); ctx.restore();
@@ -589,26 +595,46 @@ function drawRebuiltTopic(ctx,c,p,w,h,mode){
       ctx.fillText(topHotter ? "Tบน สูงกว่า" : bottomHotter ? "Tล่าง สูงกว่า" : "T คงที่", xL+14, top+28);
       ctx.restore();
       ctx.fillStyle="rgba(240,244,250,.86)"; ctx.font="bold 14px Sarabun, system-ui"; ctx.fillText("ground", xR-76, bottom-5);
-      const srcX = xL+105, srcY = bottom-groundH-10; drawSpeaker(ctx, xL+14, srcY, .90);
+      const srcX = xL+132, srcY = bottom-groundH-10; drawSpeaker(ctx, xL+6, srcY, .78);
       const p0 = {x:srcX, y:srcY};
-      let p1 = {x:srcX + 128*Math.sin(theta1), y:srcY - 128*Math.cos(theta1)};
-      let p2, p3;
+      let p1, p2, p3;
       const gradAmount = lim(Math.abs(tempBottom-tempTop)/45, 0, 1);
+      const endX = xR - 92;
+      const straightEndY = lim(srcY - (endX-srcX)/Math.max(Math.tan(theta1),0.18), top+86, bottom-groundH-16);
+      const straightP1 = {x:p0.x + (endX-p0.x)*0.34, y:p0.y + (straightEndY-p0.y)*0.34};
+      const straightP2 = {x:p0.x + (endX-p0.x)*0.68, y:p0.y + (straightEndY-p0.y)*0.68};
+
       if(noRefraction){
-        const endX = xR - 92;
-        const endY = lim(srcY - (endX-srcX)/Math.max(Math.tan(theta1),0.18), top+86, bottom-groundH-16);
-        p3 = {x:endX, y:endY};
-        p1 = {x:p0.x + (p3.x-p0.x)*0.34, y:p0.y + (p3.y-p0.y)*0.34};
-        p2 = {x:p0.x + (p3.x-p0.x)*0.68, y:p0.y + (p3.y-p0.y)*0.68};
-      } else if(effectivePreset==="night"){
-        // ด้านบนอุณหภูมิสูงกว่า / ใกล้พื้นเย็นกว่า → เสียงเบนลงใกล้พื้นชัดขึ้น
-        p2 = {x:srcX + 320, y:srcY - (92 + 24*gradAmount)};
-        p3 = {x:xR-88, y:srcY - (18 + 42*gradAmount)};
+        p3 = {x:endX, y:straightEndY};
+        p1 = straightP1;
+        p2 = straightP2;
       } else {
-        // ด้านล่างอุณหภูมิสูงกว่า / ใกล้พื้นอุ่นกว่า → เสียงเบนขึ้นชัดขึ้น
-        p2 = {x:srcX + 360, y:srcY - (178 + 40*gradAmount)};
-        p3 = {x:xR-92, y:top + (108 - 40*gradAmount)};
+        // pedagogical trend: bottom hotter -> bends upward, top hotter -> bends downward
+        const trendDir = bottomHotter ? -1 : 1; // y-axis downward
+        const bendMag = lim(70 + Math.abs(tempBottom-tempTop)*2.7*(bendBoost/3.5), 70, 190);
+        p3 = {x:endX, y:lim(straightEndY + trendDir*bendMag, top+70, bottom-groundH-18)};
+        p1 = {x:straightP1.x, y:straightP1.y + trendDir*bendMag*0.25};
+        p2 = {x:straightP2.x, y:straightP2.y + trendDir*bendMag*0.85};
       }
+
+      // straight guide so students can compare bending trend
+      if(!noRefraction){
+        ctx.save();
+        ctx.strokeStyle="rgba(255,255,255,.34)";
+        ctx.setLineDash([8,8]);
+        ctx.lineWidth=2;
+        ctx.beginPath();
+        ctx.moveTo(p0.x,p0.y);
+        ctx.lineTo(endX,straightEndY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle="rgba(235,245,255,.78)";
+        ctx.font="12px Sarabun, system-ui";
+        ctx.textAlign="left";
+        ctx.fillText("แนวเดิม", endX-58, straightEndY-10);
+        ctx.restore();
+      }
+
       // ray
       ctx.save(); ctx.strokeStyle="rgba(255,92,171,.98)"; ctx.lineWidth=4; ctx.lineCap="round"; ctx.lineJoin="round"; ctx.beginPath(); ctx.moveTo(p0.x,p0.y); ctx.bezierCurveTo(p1.x,p1.y,p2.x,p2.y,p3.x,p3.y); ctx.stroke();ctx.restore();
       // incident-style fronts near source
@@ -631,7 +657,7 @@ function drawRebuiltTopic(ctx,c,p,w,h,mode){
       if(vizState.running){ const u=(time*.055)%1; const p=bezierPoint(u,p0,p1,p2,p3); coreDot(ctx,p.x,p.y,6,"#ff5cab"); }
       ctx.save();
       const topInfoX = xL + (xR-xL)*0.56;
-      const bottomInfoX = xL + 190;
+      const bottomInfoX = xL + 216;
       ctx.textAlign="center";
       ctx.font="bold 12px Sarabun, system-ui";
       ctx.fillStyle = noRefraction ? "#dbeafe" : (topHotter ? "#ff98a8" : "#4fdcff");
@@ -650,8 +676,8 @@ function drawRebuiltTopic(ctx,c,p,w,h,mode){
       ctx.save(); ctx.fillStyle="rgba(10,22,50,.86)"; ctx.strokeStyle="rgba(96,165,250,.34)"; roundRect(ctx,panel.x+28,panel.y+26,124,30,12); ctx.fill(); ctx.stroke(); ctx.fillStyle="#dbeafe"; ctx.font="bold 14px Sarabun, system-ui"; ctx.textAlign="center"; ctx.fillText(`f = ${freq.toFixed(0)} Hz`, panel.x+90, panel.y+46); ctx.restore();
       const gradientBadgeLines = noRefraction
         ? ["อุณหภูมิเท่ากัน", "ไม่เกิดการหักเห", "แนวรังสีเป็นเส้นตรง"]
-        : [topHotter ? "ด้านบนสูงกว่า → เบนลง" : "ด้านล่างสูงกว่า → เบนขึ้น", "ภาพเชิงแนวคิด"];
-      drawBadge(xR-206, top+56, 190, noRefraction?124:108, "อุณหภูมิไล่ระดับ", gradientBadgeLines);
+        : [topHotter ? "ด้านบนสูงกว่า → เบนลง" : "ด้านล่างสูงกว่า → เบนขึ้น", "เส้นประ = แนวเดิม", "ภาพเชิงแนวคิด"];
+      drawBadge(xR-190, top+44, 174, noRefraction?116:124, "อุณหภูมิไล่ระดับ", gradientBadgeLines);
     }
 
   } else if(mode==="soundDiffraction"){

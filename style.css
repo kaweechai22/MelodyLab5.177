@@ -3051,3 +3051,53 @@ main.wrap{
 #visualizer[data-viz-mode="soundRefraction"] .vizMediaFrame canvas{
   image-rendering:auto;
 }
+
+
+/* v5.164 — Sound Refraction final layout and landscape graph emphasis */
+@media (max-width:950px) and (orientation:landscape){
+  #visualizer[data-viz-mode="soundRefraction"] .visualizerTemplateGrid.longitudinalFocusGrid{
+    grid-template-columns:minmax(0,2.35fr) minmax(250px,.80fr) !important;
+    gap:12px !important;
+    align-items:start !important;
+  }
+  #visualizer[data-viz-mode="soundRefraction"] .templateMainViz{
+    min-width:0 !important;
+  }
+  #visualizer[data-viz-mode="soundRefraction"] .vizMediaFrame canvas{
+    min-height:380px !important;
+    aspect-ratio:1200/760 !important;
+  }
+  #visualizer[data-viz-mode="soundRefraction"] .embeddedPlayerBar{
+    min-height:46px !important;
+    padding:3px 8px 5px !important;
+  }
+  #visualizer[data-viz-mode="soundRefraction"] .embeddedPlayerBar .playerBtn,
+  #visualizer[data-viz-mode="soundRefraction"] .embeddedPlayerBar .playerPrimary{
+    width:40px !important;
+    height:40px !important;
+  }
+  #visualizer[data-viz-mode="soundRefraction"] .controlViz.templateControlViz.longitudinalControlViz.neonControlViz{
+    grid-template-columns:1fr !important;
+    padding:10px 10px 8px !important;
+    row-gap:7px !important;
+    max-height:calc(100vh - 92px) !important;
+    overflow:auto !important;
+  }
+  #visualizer[data-viz-mode="soundRefraction"] .controlViz.templateControlViz.longitudinalControlViz.neonControlViz .panelTitleStack h3{
+    font-size:1rem !important;
+  }
+  #visualizer[data-viz-mode="soundRefraction"] .neonParamRow{
+    padding:6px 8px !important;
+    gap:4px 7px !important;
+  }
+  #visualizer[data-viz-mode="soundRefraction"] .paramText label{
+    font-size:.78rem !important;
+  }
+  #visualizer[data-viz-mode="soundRefraction"] .paramText small{
+    font-size:.60rem !important;
+  }
+  #visualizer[data-viz-mode="soundRefraction"] .modePill{
+    font-size:.78rem !important;
+    padding:7px 6px !important;
+  }
+}
