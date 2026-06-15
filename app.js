@@ -332,8 +332,8 @@ function drawRebuiltTopic(ctx,c,p,w,h,mode){
     const topHotter = tempTop > tempBottom;
     const bottomHotter = tempBottom > tempTop;
     const relationLabel = topHotter ? "ด้านบนอุณหภูมิสูงกว่า" : bottomHotter ? "ด้านล่างอุณหภูมิสูงกว่า" : "อุณหภูมิเท่ากัน";
-    const topTempLabel = noRefraction ? "ด้านบน" : (topTempLabel);
-    const bottomTempLabel = noRefraction ? "ด้านล่าง" : (bottomTempLabel);
+    const topTempLabel = noRefraction ? "ด้านบน" : (topHotter ? "ด้านบนอุณหภูมิสูงกว่า" : "ด้านบนอุณหภูมิต่ำกว่า");
+    const bottomTempLabel = noRefraction ? "ด้านล่าง" : (bottomHotter ? "ด้านล่างอุณหภูมิสูงกว่า" : "ด้านล่างอุณหภูมิต่ำกว่า");
     const behaviorText = noRefraction ? "ไม่เกิดการหักเหสุทธิ" : (vTop > vBottom ? "หักเหเข้าหาเส้นแนวฉาก" : "หักเหออกจากเส้นแนวฉาก");
     const effectivePreset = preset==="day" ? "day" : preset==="night" ? "night" : (bottomHotter ? "day" : topHotter ? "night" : "auto");
 
@@ -634,14 +634,14 @@ function drawRebuiltTopic(ctx,c,p,w,h,mode){
       const bottomInfoX = xL + 190;
       ctx.textAlign="center";
       ctx.font="bold 12px Sarabun, system-ui";
-      ctx.fillStyle = topHotter ? "#ff98a8" : noRefraction ? "#dbeafe" : "#4fdcff";
+      ctx.fillStyle = noRefraction ? "#dbeafe" : (topHotter ? "#ff98a8" : "#4fdcff");
       ctx.fillText(topTempLabel, topInfoX, top+50);
       ctx.font="11px Sarabun, system-ui";
       ctx.fillText(`v ≈ ${vTop.toFixed(1)} m/s`, topInfoX, top+70);
       ctx.fillText(`λ ≈ ${lambdaTop.toFixed(3)} m`, topInfoX, top+87);
       ctx.textAlign="left";
       ctx.font="bold 12px Sarabun, system-ui";
-      ctx.fillStyle = bottomHotter ? "#ff98a8" : noRefraction ? "#dbeafe" : "#4fdcff";
+      ctx.fillStyle = noRefraction ? "#dbeafe" : (bottomHotter ? "#ff98a8" : "#4fdcff");
       ctx.fillText(bottomTempLabel, bottomInfoX, bottom-66);
       ctx.font="11px Sarabun, system-ui";
       ctx.fillText(`v ≈ ${vBottom.toFixed(1)} m/s`, bottomInfoX, bottom-47);
