@@ -1,0 +1,10 @@
+{
+  "version": "v5.194",
+  "base": "v5.193",
+  "changes": [
+    "Rebuilt topic 9 Wave Superposition page",
+    "Three-lane wave display: wave 1, wave 2, resultant",
+    "Readouts for λ and resultant amplitude",
+    "Service worker cache name updated to reduce stale cache"
+  ]
+}
