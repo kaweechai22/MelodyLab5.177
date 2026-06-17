@@ -1,5 +1,5 @@
 const $=id=>document.getElementById(id);
-/* v5.205 superposition legend final polish */
+/* v5.206 superposition legend and speed button fix */
 const rebuiltTopicModes = new Set(["soundReflection","soundRefraction","soundDiffraction","soundInterference","superposition","beatsViz","standingAir","resonanceViz","resonanceAirHarmonics","dopplerViz","shockWave","soundIntensity","soundIntensityLevel","soundLevelHearing","harmonicsViz","noisePollution","applicationsSound"]);
 const soundTopicModes = rebuiltTopicModes;
 

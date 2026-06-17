@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MelodyLab v5.205 - Wave Superposition (การซ้อนทับของคลื่น)</title>
+  <title>MelodyLab v5.206 - Wave Superposition (การซ้อนทับของคลื่น)</title>
   <meta name="description" content="MelodyLab ห้องทดลองเสียงและเก็บข้อมูล ด้วยมือถือ">
   <meta name="theme-color" content="#0f172a">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/png" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="stylesheet" href="style.css">
-  <meta name="melodylab-build-version" content="v5.205-wave-superposition-legend-final-polish">
+  <meta name="melodylab-build-version" content="v5.206-wave-superposition-legend-speed-button-fix">
   <style>
     .supReadoutBar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:10px}
     .supReadoutBar>div{border:1px solid rgba(148,163,184,.18);background:rgba(15,23,42,.48);border-radius:14px;padding:9px 11px;min-height:56px}
@@ -20,16 +20,23 @@
     .versionBadge{display:inline-block;margin-top:10px;padding:5px 10px;border-radius:999px;border:1px solid rgba(34,197,94,.35);background:rgba(34,197,94,.14);color:#bbf7d0;font-weight:800;font-size:.80rem}
     .neonParamRow .paramIcon{color:#f8fafc;border:1px solid rgba(255,255,255,.16);box-shadow:0 10px 24px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.10)}
     .a1Row .paramIcon{background:linear-gradient(135deg,#38bdf8,#06b6d4)}
-    .a2Row .paramIcon{background:linear-gradient(135deg,#ec4899,#f472b6)}
+    .a2Row .paramIcon{background:linear-gradient(135deg,#ef4444,#f87171)}
     .freqRow .paramIcon{background:linear-gradient(135deg,#3b82f6,#60a5fa)}
     .phaseRow .paramIcon{background:linear-gradient(135deg,#a855f7,#c084fc)}
     .timeRow .paramIcon{background:linear-gradient(135deg,#22c55e,#86efac)}
     .templateInsightCard li{line-height:1.55}
 
-    .speedButtons{display:flex;gap:6px;align-items:center;justify-content:flex-end;margin-top:4px;flex:0 0 auto}
-    .speedButtons button{border:1px solid rgba(148,163,184,.24);background:rgba(15,23,42,.68);color:#e5eef8;border-radius:9px;padding:3px 7px;font-size:.72rem;line-height:1.1;font-weight:800;cursor:pointer;touch-action:manipulation;min-width:48px;height:24px}
+    .waveLegendLine{width:30px;height:5px;border-radius:999px;display:inline-block;flex:0 0 30px;box-shadow:0 0 10px rgba(255,255,255,.10)}
+    .waveLegendLine.wave1{background:#38bdf8;box-shadow:0 0 12px rgba(56,189,248,.45)}
+    .waveLegendLine.wave2{background:#ef4444;box-shadow:0 0 12px rgba(239,68,68,.42)}
+    .waveLegendLine.waveSum{background:#22c55e;box-shadow:0 0 12px rgba(34,197,94,.42)}
+    .probeLegendDot{width:14px;height:14px;border-radius:999px;background:#f43f5e;display:inline-block;flex:0 0 14px;box-shadow:0 0 0 2px rgba(255,255,255,.18)}
+    .speedButtonsStandalone{display:flex;gap:8px;align-items:center;justify-content:flex-start;margin:6px 0 0 64px;position:relative;z-index:2}
+    .speedButtons{display:flex;gap:8px;align-items:center}
+    .speedButtons button{border:1px solid rgba(148,163,184,.24);background:rgba(15,23,42,.76);color:#e5eef8;border-radius:10px;padding:5px 10px;font-size:.78rem;line-height:1.1;font-weight:800;cursor:pointer;touch-action:manipulation;min-width:58px;height:30px}
     .timeRow input[type=range]{touch-action:pan-x;min-width:0}
-    @media(max-width:760px){.timeRow{align-items:flex-start}.speedButtons{justify-content:flex-start;width:auto;margin-left:0}.speedButtons button{min-width:54px;height:26px;padding:4px 7px;font-size:.74rem}}
+    @media(max-width:760px){.speedButtonsStandalone{margin-left:62px;margin-top:8px}.speedButtons button{min-width:58px;height:30px;padding:5px 9px;font-size:.78rem}}
+
     @media(max-width:760px){
       .supReadoutBar{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
       .supReadoutBar>div{min-height:auto;padding:9px 10px}
@@ -50,7 +57,7 @@
     <div>
       <h2>Wave Superposition (การซ้อนทับของคลื่น)</h2>
       <p class="sectionLead">การซ้อนทับของคลื่นคือการรวมการกระจัดของคลื่นสองขบวน ณ ตำแหน่งเดียวกัน โดยคลื่นรวมมีค่าเป็น y = y₁ + y₂ จึงเกิดการเสริมกันหรือหักล้างกันได้ตามความต่างเฟส</p>
-      <span class="versionBadge">v5.205 • legend final polish</span>
+      <span class="versionBadge">v5.206 • legend + speed buttons fixed</span>
     </div>
   </div>
   <div class="visualizerTemplateGrid longitudinalFocusGrid">
@@ -82,10 +89,10 @@
             <li>ถ้าเฟสตรงข้ามกันมาก คลื่นรวมมีแอมพลิจูดลดลง (หักล้างกัน)</li>
           </ul></div>
           <div class="templateLegendCard">
-            <div class="legendRow"><span class="legendDot cyan"></span><span>คลื่นที่ 1</span></div>
-            <div class="legendRow"><span class="legendDot pink"></span><span>คลื่นที่ 2</span></div>
-            <div class="legendRow"><span class="legendDot green"></span><span>คลื่นรวม</span></div>
-            <div class="legendRow"><span class="legendDot red"></span><span>จุดสังเกต ณ ตำแหน่งเดียวกัน</span></div>
+            <div class="legendRow"><span class="waveLegendLine wave1"></span><span>คลื่นที่ 1</span></div>
+            <div class="legendRow"><span class="waveLegendLine wave2"></span><span>คลื่นที่ 2</span></div>
+            <div class="legendRow"><span class="waveLegendLine waveSum"></span><span>คลื่นรวม</span></div>
+            <div class="legendRow"><span class="probeLegendDot"></span><span>จุดสังเกต ณ ตำแหน่งเดียวกัน</span></div>
           </div>
           <div class="templateInsightCard"><div class="insightTitle">ข้อจำกัดของแบบจำลอง</div><ul>
             <li>ใช้คลื่นไซน์สองขบวนที่มีความถี่เท่ากัน เพื่อเน้นหลักการซ้อนทับพื้นฐาน</li>
@@ -100,7 +107,8 @@
       <div class="field richField neonParamRow a2Row"><div class="paramIcon">A₂</div><div class="paramText"><label>แอมพลิจูดคลื่นที่ 2</label><small>กำหนดขนาดการกระจัดของคลื่นที่ 2</small></div><input id="vizAmp2" type="range" min="0.20" max="1.50" step="0.05" value="0.80"><div class="paramValueWrap"><span id="vizAmp2Label" class="valueBadge">--</span></div></div>
       <div class="field richField neonParamRow freqRow"><div class="paramIcon">f</div><div class="paramText"><label>ความถี่ f</label><small>ใช้ร่วมกับ v เพื่อคำนวณความยาวคลื่น λ = v/f</small></div><input id="vizFreq" type="range" min="100" max="1000" step="10" value="440"><div class="paramValueWrap"><span id="vizFreqLabel" class="valueBadge">--</span></div></div>
       <div class="field richField neonParamRow phaseRow"><div class="paramIcon">Δφ</div><div class="paramText"><label>ความต่างเฟส Δφ</label><small>เลื่อนเฟสของคลื่นที่ 2 เทียบกับคลื่นที่ 1</small></div><input id="vizPhaseDiff" type="range" min="0" max="180" step="5" value="0"><div class="paramValueWrap"><span id="vizPhaseDiffLabel" class="valueBadge">--</span></div></div>
-      <div class="field richField neonParamRow timeRow"><div class="paramIcon">◷</div><div class="paramText"><label>ความเร็วแอนิเมชัน</label><small>ควบคุมความเร็วภาพโดยตรง ช่วง 0.1×–1.0× ไม่ผูกกับ f</small></div><input id="vizTimeSpeed" type="range" min="0.1" max="1.0" step="0.1" value="0.3"><div class="paramValueWrap"><span id="vizTimeLabel" class="valueBadge">--</span></div><div class="speedButtons"><button type="button" id="vizSpeedDown">ช้าลง</button><button type="button" id="vizSpeedUp">เร็วขึ้น</button></div></div>
+      <div class="field richField neonParamRow timeRow"><div class="paramIcon">◷</div><div class="paramText"><label>ความเร็วแอนิเมชัน</label><small>ควบคุมความเร็วภาพโดยตรง ช่วง 0.1×–1.0× ไม่ผูกกับ f</small></div><input id="vizTimeSpeed" type="range" min="0.1" max="1.0" step="0.1" value="0.3"><div class="paramValueWrap"><span id="vizTimeLabel" class="valueBadge">--</span></div></div>
+      <div class="speedButtons speedButtonsStandalone"><button type="button" id="vizSpeedDown">ช้าลง</button><button type="button" id="vizSpeedUp">เร็วขึ้น</button></div>
     </div>
   </div>
   <div class="card templateDataCard localDataCard" id="vizLogCard">

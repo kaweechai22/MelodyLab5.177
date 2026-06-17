@@ -1146,6 +1146,8 @@ main.wrap{
 .legendRow{display:flex;align-items:center;gap:10px;color:#dbeafe;font-size:.92rem}
 .legendDot{width:14px;height:14px;border-radius:50%;display:inline-block;flex:0 0 auto}
 .legendDot.cyan{background:#22d3ee}
+.legendDot.pink{background:#ef4444;box-shadow:0 0 0 2px rgba(255,255,255,.16)}
+.legendDot.green{background:#22c55e;box-shadow:0 0 0 2px rgba(255,255,255,.16)}
 .legendDot.red{background:#ff4d6d;box-shadow:0 0 0 2px rgba(255,255,255,.2)}
 .legendMark{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;color:#cbd5e1;font-weight:800}
 .templateReadout > div{min-height:96px}

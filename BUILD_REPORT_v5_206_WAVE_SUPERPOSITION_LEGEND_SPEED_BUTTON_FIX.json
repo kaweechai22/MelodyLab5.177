@@ -1,0 +1,10 @@
+{
+  "version": "v5.206",
+  "base": "v5.205",
+  "fixes_from_user_screenshot": [
+    "Static legend card now uses visible color bars for wave 1, wave 2, and resultant",
+    "Added missing .legendDot.pink and .legendDot.green CSS fallback",
+    "Moved speed buttons outside time slider row so they do not overlap the speed slider on mobile",
+    "Changed A2 parameter icon to red to match wave 2"
+  ]
+}
