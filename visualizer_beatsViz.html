@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MelodyLab v5.209 - Beats (บีตส์)</title>
+  <title>MelodyLab v5.210 - Beats (บีตส์)</title>
   <meta name="description" content="MelodyLab ห้องทดลองเสียงและเก็บข้อมูล ด้วยมือถือ">
   <meta name="theme-color" content="#0f172a">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/png" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="stylesheet" href="style.css">
-  <meta name="melodylab-build-version" content="v5.209-beats-text-trim">
+  <meta name="melodylab-build-version" content="v5.210-beats-layout-audio-gap-limit">
   <style>
     .beatReadoutBar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:10px}
     .beatReadoutBar>div{border:1px solid rgba(148,163,184,.18);background:rgba(15,23,42,.48);border-radius:14px;padding:9px 11px;min-height:56px}
@@ -29,7 +29,7 @@
     .timeRow .paramIcon{background:linear-gradient(135deg,#8b5cf6,#c084fc)}
     .templateInsightCard li{line-height:1.55}
 
-    #visualizerCanvas{aspect-ratio:1200/390;max-height:390px}
+    #visualizerCanvas{display:block;width:100% !important;height:350px !important;max-height:350px !important;aspect-ratio:auto !important}
     .audioButtons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
     .audioBtn{border:1px solid rgba(148,163,184,.26);border-radius:16px;padding:12px 14px;font-weight:900;font-size:.95rem;cursor:pointer;touch-action:manipulation}
     .audioBtn.playSound{background:linear-gradient(135deg,#16a34a,#22c55e);color:#ecfdf5;border-color:rgba(74,222,128,.55)}
@@ -41,6 +41,7 @@
     .speedButtons button{border:1px solid rgba(148,163,184,.24);background:rgba(15,23,42,.76);color:#e5eef8;border-radius:10px;padding:5px 10px;font-size:.78rem;line-height:1.1;font-weight:800;cursor:pointer;touch-action:manipulation;min-width:58px;height:30px}
     .timeRow input[type=range]{touch-action:pan-x;min-width:0}
     @media(max-width:760px){
+      #visualizerCanvas{height:330px !important;max-height:330px !important}
       .beatReadoutBar{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
       .beatReadoutBar>div{min-height:auto;padding:9px 10px}
       .beatReadoutBar>div:last-child{grid-column:1/-1}
@@ -62,14 +63,14 @@
     <div>
       <h2>Beats (บีตส์)</h2>
       <p class="sectionLead">บีตส์คือเสียงดัง–ค่อยสลับกันเป็นจังหวะ เมื่อคลื่นเสียงสองขบวนที่มีความถี่ใกล้กันซ้อนทับกัน</p>
-      <span class="versionBadge">v5.209 • beats text trimmed</span>
+      <span class="versionBadge">v5.210 • layout + audio moved + Δf≤10 Hz</span>
     </div>
   </div>
   <div class="visualizerTemplateGrid longitudinalFocusGrid">
     <div class="card mainViz templateMainViz longitudinalMainViz">
       <div class="vizMediaFrame">
         <div class="vizSingleModeLabel"><span>🎚️</span> Beats (บีตส์)</div>
-        <canvas id="visualizerCanvas" width="1200" height="390" aria-label="ภาพจำลองการเกิดบีตส์"></canvas>
+        <canvas id="visualizerCanvas" width="1200" height="350" aria-label="ภาพจำลองการเกิดบีตส์"></canvas>
         <div class="vizPlayerBar embeddedPlayerBar" aria-label="ปุ่มควบคุมภาพจำลอง">
           <div class="playerCluster playerCenter playerCenterOnly">
             <button id="vizPlayBtn" class="playerBtn playerPrimary playerPlay" title="เล่น" aria-label="เล่น"><span class="playerGlyph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 6.5v11l9-5.5-9-5.5z"/></svg></span></button>
@@ -107,13 +108,13 @@
     <div class="card controlViz templateControlViz longitudinalControlViz neonControlViz">
       <div class="panelTitleStack"><h3>Parameters (ตัวแปรควบคุม)</h3><p class="panelSubtext">ปรับ f₁ และ f₂ ให้ใกล้กัน แล้วสังเกตจังหวะดัง–ค่อยของคลื่นรวม</p></div>
       <div class="field richField neonParamRow f1Row"><div class="paramIcon">f₁</div><div class="paramText"><label>ความถี่ที่ 1</label><small>เสียงตัวที่ 1</small></div><input id="vizFreq1" type="range" min="200" max="1000" step="1" value="440"><div class="paramValueWrap"><span id="vizFreq1Label" class="valueBadge">--</span></div></div>
-      <div class="field richField neonParamRow f2Row"><div class="paramIcon">f₂</div><div class="paramText"><label>ความถี่ที่ 2</label><small>เสียงตัวที่ 2</small></div><input id="vizFreq2" type="range" min="200" max="1000" step="1" value="444"><div class="paramValueWrap"><span id="vizFreq2Label" class="valueBadge">--</span></div></div>
-      <div class="field richField neonParamRow ampRow"><div class="paramIcon">A</div><div class="paramText"><label>แอมพลิจูด</label><small>ขนาดการสั่นของเสียงทั้งสอง</small></div><input id="vizAmp" type="range" min="0.20" max="1.50" step="0.05" value="0.90"><div class="paramValueWrap"><span id="vizAmpLabel" class="valueBadge">--</span></div></div>
+      <div class="field richField neonParamRow f2Row"><div class="paramIcon">f₂</div><div class="paramText"><label>ความถี่ที่ 2</label><small>ต่างจาก f₁ ได้ไม่เกิน 10 Hz</small></div><input id="vizFreq2" type="range" min="200" max="1000" step="1" value="447"><div class="paramValueWrap"><span id="vizFreq2Label" class="valueBadge">--</span></div></div>
       <div class="field richField neonParamRow volumeRow"><div class="paramIcon">Vol</div><div class="paramText"><label>ระดับเสียงจริง</label><small>เริ่มเบาเพื่อความปลอดภัย</small></div><input id="vizVolume" type="range" min="0.00" max="0.20" step="0.01" value="0.06"><div class="paramValueWrap"><span id="vizVolumeLabel" class="valueBadge">--</span></div></div>
+      <div class="audioButtons"><button type="button" id="beatAudioPlay" class="audioBtn playSound">เปิดเสียงบีตส์</button><button type="button" id="beatAudioStop" class="audioBtn stopSound">ปิดเสียง</button></div>
+      <div id="beatAudioStatus" class="audioStatus">ยังไม่เล่นเสียง: กดปุ่มเปิดเสียงบีตส์ก่อน</div>
+      <div class="field richField neonParamRow ampRow"><div class="paramIcon">A</div><div class="paramText"><label>แอมพลิจูด</label><small>ขนาดการสั่นของเสียงทั้งสอง</small></div><input id="vizAmp" type="range" min="0.20" max="1.50" step="0.05" value="0.90"><div class="paramValueWrap"><span id="vizAmpLabel" class="valueBadge">--</span></div></div>
       <div class="field richField neonParamRow timeRow"><div class="paramIcon">◷</div><div class="paramText"><label>ความเร็วแอนิเมชัน</label><small>ควบคุมความเร็วภาพ ไม่ผูกกับความถี่เสียงจริง</small></div><input id="vizTimeSpeed" type="range" min="0.1" max="1.0" step="0.1" value="0.3"><div class="paramValueWrap"><span id="vizTimeLabel" class="valueBadge">--</span></div></div>
       <div class="speedButtons speedButtonsStandalone"><button type="button" id="vizSpeedDown">ช้าลง</button><button type="button" id="vizSpeedUp">เร็วขึ้น</button></div>
-      <div class="audioButtons"><button type="button" id="beatAudioPlay" class="audioBtn playSound">ฟังเสียงบีตส์จริง</button><button type="button" id="beatAudioStop" class="audioBtn stopSound">หยุดเสียง</button></div>
-      <div id="beatAudioStatus" class="audioStatus">ยังไม่เล่นเสียง: กดปุ่มฟังเสียงบีตส์จริงก่อน</div>
     </div>
   </div>
   <div class="card templateDataCard localDataCard" id="vizLogCard">
@@ -129,7 +130,27 @@ const $ = id => document.getElementById(id);
 const state = {running:true,time:0,last:performance.now(),raf:0,logs:[],audio:{ctx:null,osc1:null,osc2:null,gain:null,playing:false}};
 function fmt(v,n=2){return Number(v).toFixed(n);}
 function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function enforceFreqGap(changedId='vizFreq2'){
+  const f1El=$('vizFreq1'), f2El=$('vizFreq2'); if(!f1El||!f2El)return;
+  let f1=Number(f1El.value), f2=Number(f2El.value);
+  const limit=10;
+  if(Math.abs(f2-f1)>limit){
+    if(changedId==='vizFreq1'){
+      const sign=(f2>=f1)?1:-1;
+      f2=clamp(f1+sign*limit,Number(f2El.min),Number(f2El.max));
+      f2El.value=String(Math.round(f2));
+    }else{
+      const sign=(f2>=f1)?1:-1;
+      f2=clamp(f1+sign*limit,Number(f2El.min),Number(f2El.max));
+      f2El.value=String(Math.round(f2));
+    }
+  }
+  // Keep f2 slider focus around f1 ± 10 Hz after current value is corrected.
+  f2El.min=String(Math.max(200,Math.round(f1-limit)));
+  f2El.max=String(Math.min(1000,Math.round(f1+limit)));
+}
 function params(){
+  enforceFreqGap();
   const f1=Number($('vizFreq1')?.value||440);
   const f2=Number($('vizFreq2')?.value||444);
   const A=Number($('vizAmp')?.value||0.90);
@@ -141,9 +162,8 @@ function params(){
   let stateText='ไม่มีบีตส์';
   if(df===0) stateText='ความถี่เท่ากัน ไม่มีบีตส์';
   else if(df<=3) stateText='บีตส์ช้า ชัดเจน';
-  else if(df<=10) stateText='บีตส์ชัด';
-  else if(df<=20) stateText='บีตส์เร็ว';
-  else stateText='ต่างความถี่มาก บีตส์สังเกตยาก';
+  else if(df<=7) stateText='บีตส์ชัด';
+  else stateText='บีตส์ค่อนข้างเร็ว';
   return {f1,f2,A,timeSpeed,volume,df,fMean,Tb,stateText};
 }
 function updateLabels(){
@@ -189,8 +209,8 @@ function draw(){
   const {w,h}=canvasScale(canvas), ctx=canvas.getContext('2d'), p=params();
   updateLabels(); background(ctx,w,h);
   const left=94,right=w-54,plotW=right-left;
-  const lanes=[70,150,268];
-  const ampPx=22*p.A;
+  const lanes=[Math.round(h*0.18),Math.round(h*0.36),Math.round(h*0.62)];
+  const ampPx=Math.min(19*p.A,h*0.065);
   const viewSeconds=2.0;
   const beatPhase=2*Math.PI*state.time;
   const dfForView=Math.max(0.2,p.df);
@@ -233,11 +253,11 @@ function draw(){
 
   const loudness=Math.abs(envelope(probeU));
   ctx.save();
-  ctx.fillStyle='rgba(2,6,23,.56)';ctx.strokeStyle='rgba(148,163,184,.18)';rr(ctx,right-210,h-84,190,58,16,true,true);
-  ctx.fillStyle='rgba(226,232,240,.92)';ctx.font='800 13px system-ui,sans-serif';ctx.fillText('ความดังที่จุดสังเกต',right-196,h-61);
-  ctx.fillStyle='#f59e0b';ctx.fillRect(right-196,h-42,Math.max(2,145*loudness),9);
-  ctx.strokeStyle='rgba(245,158,11,.5)';ctx.strokeRect(right-196,h-42,145,9);
-  ctx.fillStyle='rgba(226,232,240,.9)';ctx.font='700 12px system-ui,sans-serif';ctx.fillText(`${fmt(loudness*100,0)}%`,right-45,h-34);
+  ctx.fillStyle='rgba(2,6,23,.56)';ctx.strokeStyle='rgba(148,163,184,.18)';rr(ctx,right-204,h-70,184,50,14,true,true);
+  ctx.fillStyle='rgba(226,232,240,.92)';ctx.font='800 13px system-ui,sans-serif';ctx.fillText('ความดังที่จุดสังเกต',right-190,h-50);
+  ctx.fillStyle='#f59e0b';ctx.fillRect(right-190,h-34,Math.max(2,135*loudness),8);
+  ctx.strokeStyle='rgba(245,158,11,.5)';ctx.strokeRect(right-190,h-34,135,8);
+  ctx.fillStyle='rgba(226,232,240,.9)';ctx.font='700 12px system-ui,sans-serif';ctx.fillText(`${fmt(loudness*100,0)}%`,right-48,h-27);
   ctx.restore();
 }
 function tick(now){
@@ -319,7 +339,7 @@ function adjustSpeed(delta){
   const next=Math.min(Number(el.max),Math.max(Number(el.min),Number(el.value)+delta));
   el.value=next.toFixed(1); draw();
 }
-['vizFreq1','vizFreq2','vizAmp','vizVolume','vizTimeSpeed'].forEach(id=>{$(id)?.addEventListener('input',()=>{draw();updateAudioParams();});$(id)?.addEventListener('change',()=>{draw();updateAudioParams();});});
+['vizFreq1','vizFreq2','vizAmp','vizVolume','vizTimeSpeed'].forEach(id=>{$(id)?.addEventListener('input',()=>{enforceFreqGap(id);draw();updateAudioParams();});$(id)?.addEventListener('change',()=>{enforceFreqGap(id);draw();updateAudioParams();});});
 $('vizPlayBtn')?.addEventListener('click',play);
 $('vizPauseBtn')?.addEventListener('click',pause);
 $('vizResetBtn')?.addEventListener('click',reset);

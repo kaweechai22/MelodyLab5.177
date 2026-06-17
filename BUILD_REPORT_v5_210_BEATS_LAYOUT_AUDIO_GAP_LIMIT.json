@@ -1,0 +1,12 @@
+{
+  "version": "v5.210",
+  "base": "v5.209",
+  "fixes_from_user_screenshot": [
+    "Canvas forced to 350px desktop and 330px mobile to remove excessive empty graph area",
+    "Graph lanes now computed from canvas height for balanced layout",
+    "Moved audio on/off buttons immediately below f1, f2, and volume controls",
+    "Renamed buttons to เปิดเสียงบีตส์ / ปิดเสียง",
+    "Default f2 changed to 447 Hz so beat frequency starts at 7 Hz",
+    "f1 and f2 are constrained to differ by no more than 10 Hz"
+  ]
+}
