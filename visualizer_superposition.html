@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MelodyLab v5.202 - Wave Superposition (การซ้อนทับของคลื่น)</title>
+  <title>MelodyLab v5.205 - Wave Superposition (การซ้อนทับของคลื่น)</title>
   <meta name="description" content="MelodyLab ห้องทดลองเสียงและเก็บข้อมูล ด้วยมือถือ">
   <meta name="theme-color" content="#0f172a">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/png" href="icon-192.png">
   <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="stylesheet" href="style.css">
-  <meta name="melodylab-build-version" content="v5.202-wave-superposition-all-entry-fixed">
+  <meta name="melodylab-build-version" content="v5.205-wave-superposition-legend-final-polish">
   <style>
     .supReadoutBar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:10px}
     .supReadoutBar>div{border:1px solid rgba(148,163,184,.18);background:rgba(15,23,42,.48);border-radius:14px;padding:9px 11px;min-height:56px}
@@ -26,10 +26,10 @@
     .timeRow .paramIcon{background:linear-gradient(135deg,#22c55e,#86efac)}
     .templateInsightCard li{line-height:1.55}
 
-    .speedButtons{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:8px}
-    .speedButtons button{border:1px solid rgba(148,163,184,.26);background:rgba(15,23,42,.72);color:#e5eef8;border-radius:12px;padding:7px 10px;font-weight:800;cursor:pointer;touch-action:manipulation}
-    .timeRow input[type=range]{touch-action:pan-x}
-    @media(max-width:760px){.speedButtons{justify-content:flex-start;width:100%}.speedButtons button{min-width:86px;padding:9px 12px}}
+    .speedButtons{display:flex;gap:6px;align-items:center;justify-content:flex-end;margin-top:4px;flex:0 0 auto}
+    .speedButtons button{border:1px solid rgba(148,163,184,.24);background:rgba(15,23,42,.68);color:#e5eef8;border-radius:9px;padding:3px 7px;font-size:.72rem;line-height:1.1;font-weight:800;cursor:pointer;touch-action:manipulation;min-width:48px;height:24px}
+    .timeRow input[type=range]{touch-action:pan-x;min-width:0}
+    @media(max-width:760px){.timeRow{align-items:flex-start}.speedButtons{justify-content:flex-start;width:auto;margin-left:0}.speedButtons button{min-width:54px;height:26px;padding:4px 7px;font-size:.74rem}}
     @media(max-width:760px){
       .supReadoutBar{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
       .supReadoutBar>div{min-height:auto;padding:9px 10px}
@@ -50,7 +50,7 @@
     <div>
       <h2>Wave Superposition (การซ้อนทับของคลื่น)</h2>
       <p class="sectionLead">การซ้อนทับของคลื่นคือการรวมการกระจัดของคลื่นสองขบวน ณ ตำแหน่งเดียวกัน โดยคลื่นรวมมีค่าเป็น y = y₁ + y₂ จึงเกิดการเสริมกันหรือหักล้างกันได้ตามความต่างเฟส</p>
-      <span class="versionBadge">v5.202 • all entry fixed • center probe</span>
+      <span class="versionBadge">v5.205 • legend final polish</span>
     </div>
   </div>
   <div class="visualizerTemplateGrid longitudinalFocusGrid">
@@ -73,12 +73,11 @@
         <div><label>Resultant amplitude</label><b id="supResultAmpLabel">--</b></div>
         <div><label>State</label><b id="supStateLabel">--</b></div>
       </div>
-      <p class="compactSupNote">กราฟบนแสดง y₁, y₂ และ y = y₁ + y₂ ที่เส้นประกลางภาพ ส่วน f ใช้กำหนด λ เท่านั้น ความเร็วภาพควบคุมด้วย slider และปุ่มช้าลง/เร็วขึ้น</p>
-      <details class="explainDetails">
+<details class="explainDetails">
         <summary>สาระสำคัญที่ควรสังเกต</summary>
         <div class="detailsBody"><div class="templateUnderCanvas explainGrid">
           <div class="templateInsightCard"><div class="insightTitle">หลักฟิสิกส์ที่ใช้</div><ul>
-            <li>หลักการซ้อนทับ: <b>y = y₁ + y₂</b></li>
+            
             <li>ถ้าเฟสตรงกันมาก คลื่นรวมมีแอมพลิจูดมากขึ้น (เสริมกัน)</li>
             <li>ถ้าเฟสตรงข้ามกันมาก คลื่นรวมมีแอมพลิจูดลดลง (หักล้างกัน)</li>
           </ul></div>
@@ -147,13 +146,14 @@ function draw(){
   background(ctx,w,h);
   const left=96,right=w-56,plotW=right-left,viewLen=3.0,ampPx=34;
   const lanes=[96,230,364];
-  const labels=[['คลื่นที่ 1','#38bdf8'],['คลื่นที่ 2','#ec4899'],['คลื่นรวม','#22c55e']];
+  const labels=[['คลื่นที่ 1','#38bdf8'],['คลื่นที่ 2','#ef4444'],['คลื่นรวม','#22c55e']];
   ctx.save();
   labels.forEach((arr,i)=>{
-    const y0=lanes[i];
+    const y0=lanes[i], name=arr[0], col=arr[1];
     ctx.strokeStyle='rgba(226,232,240,.18)'; ctx.setLineDash([6,6]); ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(left,y0); ctx.lineTo(right,y0); ctx.stroke(); ctx.setLineDash([]);
-    ctx.fillStyle='rgba(226,232,240,.92)'; ctx.font='700 13px system-ui,sans-serif'; ctx.fillText(arr[0],18,y0+4);
-    ctx.fillStyle=arr[1]; ctx.fillRect(18,y0-16,18,4);
+    ctx.fillStyle='rgba(2,6,23,.42)'; ctx.strokeStyle='rgba(148,163,184,.16)'; rr(ctx,14,y0-25,108,30,12,true,true);
+    ctx.strokeStyle=col; ctx.lineWidth=3.2; ctx.beginPath(); ctx.moveTo(24,y0-10); ctx.lineTo(50,y0-10); ctx.stroke();
+    ctx.fillStyle='rgba(226,232,240,.95)'; ctx.font='800 12px system-ui,sans-serif'; ctx.fillText(name,58,y0-5);
     ctx.strokeStyle='rgba(226,232,240,.55)'; ctx.fillStyle='rgba(226,232,240,.55)'; arrow(ctx,left, y0-46, left+64, y0-46);
   });
   ctx.fillStyle='rgba(2,6,23,.52)'; ctx.strokeStyle='rgba(148,163,184,.20)'; rr(ctx,left+12,14,230,30,12,true,true);

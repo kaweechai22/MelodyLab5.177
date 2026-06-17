@@ -1,0 +1,11 @@
+{
+  "version": "v5.203",
+  "base": "v5.202",
+  "changes": [
+    "Removed compact note under readout/state",
+    "Removed first physics bullet y = y1 + y2",
+    "Added stronger wave legend markers for wave 1, wave 2, and resultant in canvas",
+    "Patched legacy app.js legends too",
+    "Made speed buttons compact to avoid overlapping the slider"
+  ]
+}

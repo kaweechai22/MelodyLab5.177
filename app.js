@@ -1,5 +1,5 @@
 const $=id=>document.getElementById(id);
-/* v5.202 superposition all entry fixed */
+/* v5.205 superposition legend final polish */
 const rebuiltTopicModes = new Set(["soundReflection","soundRefraction","soundDiffraction","soundInterference","superposition","beatsViz","standingAir","resonanceViz","resonanceAirHarmonics","dopplerViz","shockWave","soundIntensity","soundIntensityLevel","soundLevelHearing","harmonicsViz","noisePollution","applicationsSound"]);
 const soundTopicModes = rebuiltTopicModes;
 
@@ -749,12 +749,13 @@ function drawRebuiltTopic(ctx,c,p,w,h,mode){
     panel=corePanel(ctx,w,h,"Superposition (การซ้อนทับของคลื่น)"); const x0=panel.x+80,x1=panel.x+panel.w-70,y1=panel.y+110,y2=panel.y+205,y3=panel.y+300, W=x1-x0, probeX=x0+W*.50, tSlow=time*.35;
     function waveVal(i,phase){return Math.sin(i/70-tSlow+phase);}
     function plot(ybase, phase, col, amp=A*28){ const pts=[]; for(let i=0;i<=W;i+=4){ const x=x0+i; const y=ybase-waveVal(i,phase)*amp; pts.push([x,y]); } coreWaveLine(ctx,pts,col,2.6); }
-    plot(y1,0,"#22d3ee"); plot(y2,ph,"#ff5cab");
-    const pts=[]; for(let i=0;i<=W;i+=4){ const y=y3-(waveVal(i,0)+waveVal(i,ph))*A*22; pts.push([x0+i,y]); } coreWaveLine(ctx,pts,"#fbbf24",3.3);
+    plot(y1,0,"#38bdf8"); plot(y2,ph,"#ef4444");
+    const pts=[]; for(let i=0;i<=W;i+=4){ const y=y3-(waveVal(i,0)+waveVal(i,ph))*A*22; pts.push([x0+i,y]); } coreWaveLine(ctx,pts,"#22c55e",3.3);
     ctx.save(); ctx.strokeStyle="rgba(255,255,255,.62)"; ctx.setLineDash([6,7]); ctx.lineWidth=1.7; ctx.beginPath(); ctx.moveTo(probeX,panel.y+55); ctx.lineTo(probeX,panel.y+panel.h-42); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle="#e8f5ff"; ctx.font="bold 13px Sarabun"; ctx.textAlign="center"; ctx.fillText("จุดสังเกต",probeX,panel.y+42); ctx.textAlign="left"; ctx.restore();
     const pi=probeX-x0, yy1=waveVal(pi,0)*A, yy2=waveVal(pi,ph)*A, yys=yy1+yy2;
-    coreDot(ctx,probeX,y1-yy1*28,5,"#22d3ee"); coreDot(ctx,probeX,y2-yy2*28,5,"#ff5cab"); coreDot(ctx,probeX,y3-yys*22,6,"#fbbf24");
-    ctx.fillStyle="#e8f5ff"; ctx.font="bold 15px Sarabun"; ctx.fillText("คลื่น 1",x0,y1-42); ctx.fillText("คลื่น 2",x0,y2-42); ctx.fillText("ผลรวม y = y₁ + y₂",x0,y3-45);
+    coreDot(ctx,probeX,y1-yy1*28,5,"#38bdf8"); coreDot(ctx,probeX,y2-yy2*28,5,"#ef4444"); coreDot(ctx,probeX,y3-yys*22,6,"#22c55e");
+    function waveLegend(y,label,col){ctx.save();ctx.strokeStyle=col;ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(x0,y-42);ctx.lineTo(x0+22,y-42);ctx.stroke();ctx.fillStyle="#e8f5ff";ctx.font="bold 15px Sarabun";ctx.fillText(label,x0+30,y-37);ctx.restore();}
+    waveLegend(y1,"คลื่นที่ 1","#38bdf8"); waveLegend(y2,"คลื่นที่ 2","#ef4444"); waveLegend(y3,"คลื่นรวม","#22c55e");
 
   } else if(mode==="beatsViz"){
     const f1=vNum("vizFreq",440), f2=vNum("vizFreq2",444), A=vNum("vizAmp",.9), fb=Math.abs(f2-f1); vText("vizFreqLabel",f1.toFixed(0)+" Hz"); vText("vizFreq2Label",f2.toFixed(0)+" Hz"); vText("vizAmpLabel",A.toFixed(2));
@@ -2548,12 +2549,20 @@ if(mode==="displacementPressure"){
       ptsA.push([x,135-y1]); ptsB.push([x,250-y2]); ptsSum.push([x,385-(y1+y2)*0.72]);
     }
     const trackedIdx = Math.floor(ptsA.length*0.50);
-    drawWaveLine(ctx,ptsA,"#22d3ee",2); drawWaveLine(ctx,ptsB,"#a855f7",2); drawWaveLine(ctx,ptsSum,"#fbbf24",4);
-    ctx.fillStyle="#9fb3c8"; ctx.fillText("Wave A",70,80); ctx.fillText("Wave B",70,195); ctx.fillText("Result",70,330);
+    const colA = mode==="superposition" ? "#38bdf8" : "#22d3ee";
+    const colB = mode==="superposition" ? "#ef4444" : "#a855f7";
+    const colSum = mode==="superposition" ? "#22c55e" : "#fbbf24";
+    drawWaveLine(ctx,ptsA,colA,2); drawWaveLine(ctx,ptsB,colB,2); drawWaveLine(ctx,ptsSum,colSum,4);
+    function miniLegend(label,y,col){ctx.save();ctx.strokeStyle=col;ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(70,y);ctx.lineTo(96,y);ctx.stroke();ctx.fillStyle="#cfe9ff";ctx.font="bold 15px Sarabun, system-ui";ctx.fillText(label,104,y+5);ctx.restore();}
+    if(mode==="superposition"){
+      miniLegend("คลื่นที่ 1",80,colA); miniLegend("คลื่นที่ 2",195,colB); miniLegend("คลื่นรวม",330,colSum);
+    }else{
+      miniLegend("Wave A",80,colA); miniLegend("Wave B",195,colB); miniLegend("Result",330,colSum);
+    }
     drawTrackedVertical(ctx,ptsA[trackedIdx][0],85,405);
-    drawTrackedParticle(ctx,ptsA[trackedIdx][0],ptsA[trackedIdx][1],"wave A point");
-    drawTrackedParticle(ctx,ptsB[trackedIdx][0],ptsB[trackedIdx][1],"wave B point");
-    drawTrackedParticle(ctx,ptsSum[trackedIdx][0],ptsSum[trackedIdx][1],"result point");
+    drawTrackedParticle(ctx,ptsA[trackedIdx][0],ptsA[trackedIdx][1],mode==="superposition"?"คลื่นที่ 1":"wave A point");
+    drawTrackedParticle(ctx,ptsB[trackedIdx][0],ptsB[trackedIdx][1],mode==="superposition"?"คลื่นที่ 2":"wave B point");
+    drawTrackedParticle(ctx,ptsSum[trackedIdx][0],ptsSum[trackedIdx][1],mode==="superposition"?"คลื่นรวม":"result point");
   }
 
   if(mode==="standingAir"){

@@ -1,0 +1,15 @@
+{
+  "version": "v5.205",
+  "base": "v5.204",
+  "legend_colors": {
+    "คลื่นที่ 1": "#38bdf8",
+    "คลื่นที่ 2": "#ef4444",
+    "คลื่นรวม": "#22c55e"
+  },
+  "changes": [
+    "Widened detail legend label boxes",
+    "Made detail legend color bars longer and clearer",
+    "Added colored legend bars to old app.js superposition branch",
+    "Kept app.js corePanel legend bars consistent"
+  ]
+}
